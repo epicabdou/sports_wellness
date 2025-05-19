@@ -105,19 +105,19 @@
       <div class="bg-white overflow-hidden shadow rounded-lg">
         <div class="px-4 py-5 sm:p-6">
           <div class="flex items-center">
-            <div class="flex-shrink-0 bg-red-100 rounded-md p-3">
-              <MessageSquare class="h-6 w-6 text-red-600" />
+            <div class="flex-shrink-0 bg-emerald-100 rounded-md p-3">
+              <Mail class="h-6 w-6 text-emerald-600" />
             </div>
             <div class="ml-5 w-0 flex-1">
               <dl>
                 <dt class="text-sm font-medium text-gray-500 truncate">
-                  Commentaires
+                  Abonnés Newsletter
                 </dt>
                 <dd v-if="isLoading">
                   <div class="h-5 w-20 bg-gray-200 rounded animate-pulse"></div>
                 </dd>
                 <dd v-else class="text-2xl font-semibold text-gray-900">
-                  {{ stats.commentsCount }}
+                  {{ stats.newsletterCount }}
                 </dd>
               </dl>
             </div>
@@ -125,9 +125,9 @@
         </div>
         <div class="bg-gray-50 px-4 py-4 sm:px-6">
           <div class="text-sm">
-            <a href="#comments" class="font-medium text-primary-600 hover:text-primary-500">
-              Voir les commentaires récents
-            </a>
+            <NuxtLink to="/admin/newsletter" class="font-medium text-primary-600 hover:text-primary-500">
+              Gérer les abonnements
+            </NuxtLink>
           </div>
         </div>
       </div>
@@ -201,6 +201,86 @@
           <tr v-if="recentPosts.length === 0">
             <td colspan="5" class="px-3 py-4 text-sm text-gray-500 text-center">
               Aucun article trouvé
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Recent Newsletter Subscriptions -->
+    <div class="mt-8">
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-medium text-gray-900">
+          Inscriptions récentes à la Newsletter
+        </h2>
+        <NuxtLink to="/admin/newsletter" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+          Voir toutes
+        </NuxtLink>
+      </div>
+
+      <div class="mt-4 overflow-hidden bg-white shadow sm:rounded-md">
+        <div v-if="isLoading" class="flex justify-center py-10">
+          <Loader2 class="h-8 w-8 text-primary-500 animate-spin" />
+        </div>
+
+        <table v-else class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+          <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Nom / Email
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Téléphone
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Ville
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Date d'inscription
+            </th>
+            <th scope="col" class="relative px-6 py-3">
+              <span class="sr-only">Actions</span>
+            </th>
+          </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+          <tr v-for="subscriber in recentSubscribers" :key="subscriber.id">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 h-10 w-10">
+                  <div class="h-10 w-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-800 font-medium">
+                    {{ subscriber.name ? subscriber.name.charAt(0).toUpperCase() : 'U' }}
+                  </div>
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-gray-900">
+                    {{ subscriber.name }}
+                  </div>
+                  <div class="text-sm text-gray-500">
+                    {{ subscriber.email }}
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              {{ subscriber.phone }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              {{ subscriber.city }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              {{ formatRelativeTime(subscriber.created) }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <NuxtLink :to="`/admin/newsletter`" class="text-primary-600 hover:text-primary-900">
+                Détails
+              </NuxtLink>
+            </td>
+          </tr>
+          <tr v-if="recentSubscribers.length === 0">
+            <td colspan="5" class="px-6 py-4 text-sm text-gray-500 text-center">
+              Aucun abonné trouvé
             </td>
           </tr>
           </tbody>
@@ -338,7 +418,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRuntimeConfig } from 'nuxt/app'
-import { FileText, Folder, Users, MessageSquare, Loader2 } from 'lucide-vue-next'
+import { FileText, Folder, Users, MessageSquare, Loader2, Mail } from 'lucide-vue-next'
 import { useAuthStore } from '~/stores/auth'
 import { useAdminStore } from '~/stores/admin'
 
@@ -361,11 +441,13 @@ const stats = ref({
   postsCount: 0,
   categoriesCount: 0,
   usersCount: 0,
-  commentsCount: 0
+  commentsCount: 0,
+  newsletterCount: 0
 })
 const recentPosts = ref([])
 const recentActivities = ref([])
 const recentComments = ref([])
+const recentSubscribers = ref([])
 
 onMounted(async () => {
   try {
@@ -378,12 +460,13 @@ onMounted(async () => {
 async function loadDashboardData() {
   try {
     // Fetch all required data in parallel
-    const [posts, categories, users, activities, comments] = await Promise.all([
+    const [posts, categories, users, activities, comments, subscribers] = await Promise.all([
       fetchPosts(),
       fetchCategories(),
       fetchUsers(),
       fetchActivities(),
-      fetchComments()
+      fetchComments(),
+      fetchNewsletterSubscribers()
     ])
 
     // Set stats
@@ -391,13 +474,15 @@ async function loadDashboardData() {
       postsCount: posts.length,
       categoriesCount: categories.length,
       usersCount: users.length,
-      commentsCount: comments.length
+      commentsCount: comments.length,
+      newsletterCount: subscribers.length
     }
 
     // Set recent data
     recentPosts.value = posts.slice(0, 5)
     recentActivities.value = activities.slice(0, 5)
     recentComments.value = comments.slice(0, 5)
+    recentSubscribers.value = subscribers.slice(0, 5)
   } catch (error) {
     console.error('Failed to load dashboard data:', error)
   }
@@ -430,6 +515,22 @@ async function fetchComments() {
     return response
   } catch (error) {
     console.error('Failed to fetch comments:', error)
+    return []
+  }
+}
+
+async function fetchNewsletterSubscribers() {
+  try {
+    const pb = authStore.getPocketBaseInstance()
+    if (!pb) throw new Error('PocketBase not initialized')
+
+    const response = await pb.collection('newsletter').getFullList({
+      sort: '-created'
+    })
+
+    return response
+  } catch (error) {
+    console.error('Failed to fetch newsletter subscribers:', error)
     return []
   }
 }

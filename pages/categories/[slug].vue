@@ -48,7 +48,7 @@
 
           <template v-else>
             <div v-if="posts.length === 0" class="text-center py-10">
-              <DocumentIcon class="mx-auto h-12 w-12 text-gray-400" />
+              <FileText class="mx-auto h-12 w-12 text-gray-400" />
               <h3 class="mt-2 text-sm font-medium text-gray-900">Aucun article trouvé</h3>
               <p class="mt-1 text-sm text-gray-500">
                 Aucun article n'est disponible dans cette catégorie pour le moment.
@@ -117,7 +117,7 @@ import {
   Loader2,
   ChevronLeft,
   ChevronRight,
-  DocumentIcon,
+  FileText,
   AlertCircle
 } from 'lucide-vue-next'
 import PostCard from '~/components/blog/PostCard.vue'
