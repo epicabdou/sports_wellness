@@ -1,4 +1,5 @@
 <!-- layouts/admin.vue -->
+<!-- layouts/admin.vue (updated with newsletter link) -->
 <template>
   <div class="min-h-screen bg-gray-100">
     <!-- Off-canvas menu for mobile -->
@@ -178,7 +179,16 @@
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { Menu, X, LayoutDashboard, Users, FileText, Folder, Activity } from 'lucide-vue-next'
+import {
+  Menu,
+  X,
+  LayoutDashboard,
+  Users,
+  FileText,
+  Folder,
+  Activity,
+  Mail
+} from 'lucide-vue-next'
 import { useAuthStore } from '~/stores/auth'
 
 const authStore = useAuthStore()
@@ -191,6 +201,7 @@ const navigation = [
   { name: 'Catégories', href: '/admin/categories', icon: Folder },
   { name: 'Utilisateurs', href: '/admin/users', icon: Users },
   { name: 'Activités', href: '/admin/activities', icon: Activity },
+  { name: 'Newsletter', href: '/admin/newsletter', icon: Mail },
 ]
 
 function isCurrentRoute(path) {
