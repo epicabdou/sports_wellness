@@ -1,4 +1,4 @@
-<!-- pages/admin/posts.vue -->
+<!-- pages/admin/index.vue -->
 <template>
   <div>
     <div class="pb-5 border-b border-gray-200 sm:flex sm:items-center sm:justify-between">
@@ -285,8 +285,8 @@ import {
   DialogPanel,
   DialogTitle
 } from '@headlessui/vue'
-import { useAuthStore } from '~/stores/auth'
-import { useAdminStore } from '~/stores/admin'
+import { useAuthStore } from '~/stores/auth.js'
+import { useAdminStore } from '~/stores/admin.js'
 
 // Définir les métadonnées de la page
 definePageMeta({
