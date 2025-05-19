@@ -1,0 +1,25 @@
+// plugins/pocketbase.js
+import { useAuthStore } from '~/stores/auth'
+
+export default defineNuxtPlugin({
+    name: 'pocketbase',
+    enforce: 'pre', // Run this plugin before others
+    async setup() {
+        const authStore = useAuthStore()
+
+        // Initialize PocketBase
+        authStore.initPocketBase()
+
+        // Update last connected date if user is logged in
+        if (authStore.isLoggedIn) {
+            try {
+                // Update the lastConnected field
+                await authStore.pb.collection('users').update(authStore.user.id, {
+                    lastConnected: new Date().toISOString()
+                })
+            } catch (error) {
+                console.error('Failed to update last connected date:', error)
+            }
+        }
+    }
+})
