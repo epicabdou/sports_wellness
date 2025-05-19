@@ -110,47 +110,7 @@
     </section>
 
     <!-- Newsletter Subscription -->
-    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-secondary-500">
-      <div class="max-w-3xl mx-auto text-center">
-        <h2 class="text-3xl font-extrabold text-white">
-          Restez informé
-        </h2>
-        <p class="mt-4 text-xl text-secondary-100">
-          Inscrivez-vous à notre newsletter pour recevoir nos derniers articles et conseils.
-        </p>
-        <div class="mt-8 sm:flex sm:justify-center">
-          <div class="sm:flex-1 sm:max-w-lg">
-            <form @submit.prevent="subscribeToNewsletter" class="sm:flex">
-              <label for="email-address" class="sr-only">Adresse email</label>
-              <input
-                  id="email-address"
-                  v-model="newsletterEmail"
-                  name="email"
-                  type="email"
-                  autocomplete="email"
-                  required
-                  placeholder="Votre adresse email"
-                  class="w-full px-5 py-3 border border-white/10 text-base text-gray-900 placeholder-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary-600 focus:border-transparent"
-              />
-              <div class="mt-3 rounded-md sm:mt-0 sm:ml-3">
-                <Button
-                    type="submit"
-                    variant="primary"
-                    :loading="isSubscribing"
-                    size="lg"
-                    class="w-full"
-                >
-                  S'abonner
-                </Button>
-              </div>
-            </form>
-            <p v-if="subscriptionMessage" class="mt-3 text-sm text-white">
-              {{ subscriptionMessage }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
+    <NewsletterBanner />
   </div>
 </template>
 
@@ -161,6 +121,7 @@ import { useRuntimeConfig } from 'nuxt/app'
 import { useBlogStore } from '~/stores/blog'
 import PostCard from '~/components/blog/PostCard.vue'
 import Button from '~/components/ui/Button.vue'
+import NewsletterBanner from "~/components/home/NewsletterBanner.vue";
 
 const runtimeConfig = useRuntimeConfig()
 const pocketbaseUrl = computed(() => runtimeConfig.public.pocketbaseUrl)
