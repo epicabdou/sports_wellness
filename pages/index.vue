@@ -122,7 +122,7 @@
 import { ref, onMounted } from 'vue';
 import { Loader, AlertCircle, ArrowRight } from 'lucide-vue-next';
 
-// PocketBase composable
+// PocketBase composables
 const { getPosts, getCategories } = usePocketBase();
 
 // Data

@@ -1,4 +1,4 @@
-<!-- components/TheHeader.vue -->
+<!-- components/TheHeader.vue with fixed Menu component -->
 <template>
   <header class="bg-white shadow">
     <div class="container-custom">
@@ -37,6 +37,7 @@
         <!-- User actions -->
         <div class="hidden md:flex items-center space-x-4">
           <div v-if="authStore.isAuthenticated">
+            <!-- Fixed Menu component with as="div" prop -->
             <Menu as="div" class="relative">
               <MenuButton class="flex items-center space-x-1 text-gray-600 hover:text-primary-600">
                 <UserCircle class="h-6 w-6" />
