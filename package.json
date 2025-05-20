@@ -13,7 +13,6 @@
     "@nuxt/scripts": "^0.11.7",
     "@nuxtjs/tailwindcss": "^6.14.0",
     "@pinia/nuxt": "^0.11.0",
-    "@tanstack/react-query": "^5.76.1",
     "@unhead/vue": "^2.0.9",
     "nuxt": "^3.17.3",
     "nuxt-lucide-icons": "^1.0.5",
